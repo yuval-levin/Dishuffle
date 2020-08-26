@@ -39,6 +39,35 @@ with requests.session() as session:
     dishes = []
     '''dishes is a list of tuples : name,description,price,img '''
 
+
+    rangeRandomCategory = len(food_categories)
+    food_category_index = random.randrange(rangeRandomCategory)
+    category_address = 'https://restaurant-api.wolt.com/v3/venues/lists/{0}?lon={1}&lat={2}'.format(food_categories[food_category_index],
+                                                                                                    long, lat)
+    restaurants = session.get(category_address).json()['results']
+    rangeRandomRestaurant = len(restaurants)
+    restaurant_index = random.randrange(rangeRandomRestaurant)
+    restaurant =restaurants[restaurant_index]
+
+    restaurant_id = restaurant['active_menu']['$oid']
+    address = 'https://restaurant-api.wolt.com/v3/menus/{0}'.format(restaurant_id)
+    restaurant_page = session.get(address).json()
+    menu = restaurant_page.get('results', [{}])[0].get('items', [])
+    rangeRandomDish = len(menu)
+    dish_index = random.randrange(rangeRandomDish)
+    dish = menu[dish_index]
+    name = dish['name'][0]['value']
+    img = None
+    try:
+        img = dish['image']
+    except:
+        pass
+    price = dish['baseprice'] / 100
+    description = dish['description'][0]['value']
+    restaurant_name = restaurant['name'][1]['value']
+    print((name,restaurant_name, description, price, img))
+
+    '''
     if not path.exists('dishes.json'):
         for category in food_categories:
             category_address = 'https://restaurant-api.wolt.com/v3/venues/lists/{0}?lon={1}&lat={2}'.format(category,
@@ -68,6 +97,7 @@ with requests.session() as session:
     random_dish = random.choice(dishes)
     print(random_dish[0])
     print(random_dish[1])
+    '''
 
 
 
