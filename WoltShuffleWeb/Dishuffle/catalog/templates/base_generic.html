@@ -1,0 +1,28 @@
+<html>
+{% include 'header.html' %}
+        <title>Wolt shuffle</title>
+ <!-- for mobile responsiveness, meta -->
+  <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <body>
+        <br>
+        <div class="container">
+            {% include 'navbar.html' %}
+        </div>
+        <!-- body  -->
+        {% block body %}
+        <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+          <h1 class="display-4">Wolt Shuffle</h1>
+          <p class="lead">Wolt shuffle makes Wolt easy. <br>
+          No more overthinking your food. Click and Order</p>
+        </div>
+        {% endblock %}
+        <!-- end body  -->
+    </body>
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</html>

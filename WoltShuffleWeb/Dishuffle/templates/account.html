@@ -1,0 +1,26 @@
+{% extends "base_generic.html" %}
+
+{% block body %}
+<h2>Account</h2>
+<br>
+<p>You may edit your account details here</p>
+<br>
+
+<form method="post">
+    {% csrf_token %}
+
+  {% for field in account_form %}
+      {% include 'field_snippet.html' %}
+  {% endfor %}
+
+  {% if account_form.non_field_errors %}
+    <div style="color: red">
+      <p>{{account_form.non_field_errors}}</p>
+    </div>
+      {% endif %}
+     <button type="submit">Save changes</button>
+
+</form>
+
+
+{% endblock body %}

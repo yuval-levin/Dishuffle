@@ -6,8 +6,8 @@ from os import path
 
 from pprint import pprint
 
-'''user_input_address=input("כתובת \n")'''
-user_input_address="אבן גבירול 80"
+user_input_address=input("כתובת \n")
+'''user_input_address="אבן גבירול 80"'''
 LANGUAGE="he"
 TYPES="address"
 RADIUS=100000
