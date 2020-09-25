@@ -1,7 +1,7 @@
 {% extends "base_generic.html" %}
 
-
-<style type = 'text/css'>
+{% block body %}
+<style type="text/css">
 
 .form-signin {
   width: 100%;
@@ -12,38 +12,22 @@
 
 .form-signin .form-control {
   position: relative;
-    width: 100%;
   box-sizing: border-box;
   height: auto;
   padding: 10px;
   font-size: 16px;
 }
-.form-signin .form-control:focus {
-  z-index: 2;
-}
-.form-signin input[type="email"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
-.form-signin input[type="password"] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
 
 </style>
 
-{% block body %}
-<br>
-<h2>Log in</h2>
-        <br>
- <body class="text-center">
-    <form class="form-signin" method="post">
-        {% csrf_token %}
+  <body class="text-center">
+    <form class="form-signin" method ="post">
+  <h1 class="h3 mb-3 font-weight-normal">Log in</h1>
+    <br>
+ {% csrf_token %}
 
   <input type="username" name="username" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
-  <input type="password" id="inputPassword" class="form-control"  placeholder="Password" required>
+  <input type="password" name="password" id="inputPassword" class="form-control"  placeholder="Password" required>
       {% for field in login_form %}
         {% if field.help_text %}
             <small style = "color: grey;"> {{field.help_text}}</small>
@@ -59,9 +43,10 @@
     </div>
 
   {% endif %}
+        <br>
   <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
 
 </form>
 </body>
 
-{% endblock %}
+{% endblock body %}
