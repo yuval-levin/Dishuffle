@@ -1,26 +1,58 @@
 {% extends "base_generic.html" %}
 
 {% block body %}
-<h2>Account</h2>
-<br>
-<p>You may edit your account details here</p>
-<br>
+<style type="text/css">
 
-<form method="post">
-    {% csrf_token %}
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
 
-  {% for field in account_form %}
-      {% include 'field_snippet.html' %}
-  {% endfor %}
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
 
+</style>
+
+  <body class="text-center">
+    <form class="form-signin" method ="post">
+  <h1 class="h3 mb-3 font-weight-normal">Log in</h1>
+        <div class="pricing-header mx-auto text-center">
+          <p class="lead">Edit your account details here </p>
+        </div>
+ {% csrf_token %}
+
+  <input type="username" name="username" id="inputUsername" value="{{account_form.initial.username}}" class="form-control" placeholder="Username" required autofocus>
+        <br>
+  <input type="email" name="email" id="inputEmail"  value="{{account_form.initial.email}}" class="form-control"  placeholder="Email" required>
+    <br>
+        <input type="address" name="address" id="inputAddress" value="{{account_form.initial.address}}" class="form-control"  placeholder="Address" required>
+      {% for field in account_form %}
+        {% if field.help_text %}
+            <small style = "color: grey;"> {{field.help_text}}</small>
+          {% endif %}
+
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+        {% endfor %}
   {% if account_form.non_field_errors %}
     <div style="color: red">
       <p>{{account_form.non_field_errors}}</p>
     </div>
-      {% endif %}
-     <button type="submit">Save changes</button>
+
+  {% endif %}
+        <br>
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Save Changes</button>
 
 </form>
-
+</body>
 
 {% endblock body %}
+
