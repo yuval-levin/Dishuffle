@@ -131,6 +131,8 @@ LOGIN_REDIRECT_URL = '/'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 AUTH_USER_MODEL = 'catalog.Account'
+STATIC_ROOT = ''
+STATICFILES_DIRS =  os.path.join('static'),
 
 AUTHENTICATION_BACKENDS = (
         'django.contrib.auth.backends.ModelBackend',

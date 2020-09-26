@@ -1,26 +1,10 @@
 {% extends "base_generic.html" %}
+{% load static %}
 
 {% block body %}
-<style type="text/css">
-
-.form-signin {
-  width: 100%;
-  max-width: 330px;
-  padding: 15px;
-  margin: auto;
-}
-
-.form-signin .form-control {
-  position: relative;
-  box-sizing: border-box;
-  height: auto;
-  padding: 10px;
-  font-size: 16px;
-}
-
-</style>
 
   <body class="text-center">
+  <link rel="stylesheet" href="{% static "CSS/general_style.css"%}">
     <form class="form-signin" method ="post">
   <h1 class="h3 mb-3 font-weight-normal">Log in</h1>
     <br>
