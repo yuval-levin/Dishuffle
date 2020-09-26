@@ -6,33 +6,63 @@
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5EedZStuyMBEP7GhIII3NicSFfq3c2Eo&callback=initMap&libraries=places&v=weekly"
       defer
     ></script>
- <h2 >Register an account</h2>
-<br>
-<form method = "post">
-    {% csrf_token %}
-  {% for field in registration_form %}
-    <p>
-       {{field.label_tag}}
-          {{field}}
-          {% if field.help_text %}
-            <small style = "color: grey;"> {{field.help_text}}</small>
-          {% endif %}
 
+<style type="text/css">
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+
+</style>
+
+
+ <body class="text-center">
+    <form class="form-signin" method ="post">
+  <h1 class="h3 mb-3 font-weight-normal">Account</h1>
+        <div class="pricing-header mx-auto text-center">
+          <p class="lead">Register an account</p>
+        </div>
+    {% csrf_token %}
+   <input type="username" name="username" id="inputUsername"  class="form-control" placeholder="Username" required autofocus>
+        <br>
+  <input type="email" name="email" id="inputEmail"   class="form-control"  placeholder="Email" required>
+    <br>
+      <input type="address" name="address" id="address"  class="form-control"  placeholder="address" required>
+    <br>
+<input type="password" name="password1" id="inputPassword1"  class="form-control"  placeholder="Password" required>
+          <br>
+<input type="password" name="password2" id="inputPassword2"  class="form-control"  placeholder="Confirm Password" required>
+
+      {% for field in registration_form %}
+      <!--- deleted helper fields ---->
         {% for error in field.errors %}
           <p style="color: red">{{ error }}</p>
         {% endfor %}
+       {% endfor %}
 
-      </p>
-  {% endfor %}
-    <button type = "submit"> Register</button>
-  {% if registration_form.non_field_errors %}
+<br>
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+        {% if registration_form.non_field_errors %}
     <div style="color: red">
       <p>{{registration_form.non_field_errors}}</p>
     </div>
-
-  {% endif %}
-
+      {% endif %}
 </form>
+
+
+
+
 <script>
  function initMap() {
   const input = document.getElementById("address");
