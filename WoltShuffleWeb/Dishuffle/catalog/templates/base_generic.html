@@ -16,7 +16,12 @@
           <h1 class="display-4">Wolt Shuffle</h1>
           <p class="lead">Wolt shuffle makes Wolt easy. <br>
           No more overthinking your food. Click and Order</p>
+            <br>
+             {% if request.user.is_authenticated %}
+        <button type="button" class="btn btn-info btn-lg">SHUFFLE</button>
+            {% endif %}
         </div>
+
         {% endblock %}
         <!-- end body  -->
     </body>

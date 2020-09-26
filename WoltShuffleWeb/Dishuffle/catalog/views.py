@@ -12,7 +12,6 @@ def home(request):
     # Render the HTML template index.html with the data in the context variable
     return render(request, 'home.html', context=context)
 
-
 def registration_view(request):
     context = {}
     if request.POST:  # user is sending form data
