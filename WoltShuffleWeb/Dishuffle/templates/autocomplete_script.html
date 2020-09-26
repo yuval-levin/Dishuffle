@@ -1,0 +1,26 @@
+
+<script>
+ function initMap() {
+  const input = document.getElementById("address");
+  const autocomplete = new google.maps.places.Autocomplete(input);
+  // Set the data fields to return when the user selects a place.
+  autocomplete.setFields(["address_components", "geometry", "icon", "name"]);
+
+  autocomplete.addListener("place_changed", () => {
+    const place = autocomplete.getPlace();
+
+    if (!place.geometry) {
+      // User entered the name of a Place that was not suggested and
+      // pressed the Enter key, or the Place Details request failed.
+      window.alert("Please choose address from suggested addresses");
+      return;
+    }
+
+  });
+
+}
+
+
+
+</script>
+

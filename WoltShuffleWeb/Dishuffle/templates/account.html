@@ -1,6 +1,7 @@
 {% extends "base_generic.html" %}
 
 {% block body %}
+{% include 'google_maps_api.html' %}
 <style type="text/css">
 
 .form-signin {
@@ -22,7 +23,7 @@
 
   <body class="text-center">
     <form class="form-signin" method ="post">
-  <h1 class="h3 mb-3 font-weight-normal">Log in</h1>
+  <h1 class="h3 mb-3 font-weight-normal">Account</h1>
         <div class="pricing-header mx-auto text-center">
           <p class="lead">Edit your account details here </p>
         </div>
@@ -32,7 +33,7 @@
         <br>
   <input type="email" name="email" id="inputEmail"  value="{{account_form.initial.email}}" class="form-control"  placeholder="Email" required>
     <br>
-        <input type="address" name="address" id="inputAddress" value="{{account_form.initial.address}}" class="form-control"  placeholder="Address" required>
+        <input type="address" name="address" id="address" value="{{account_form.initial.address}}" class="form-control"  placeholder="Address" required>
       {% for field in account_form %}
         {% if field.help_text %}
             <small style = "color: grey;"> {{field.help_text}}</small>
@@ -52,6 +53,7 @@
   <button class="btn btn-lg btn-primary btn-block" type="submit">Save Changes</button>
 
 </form>
+  {% include 'autocomplete_script.html' %}
 </body>
 
 {% endblock body %}

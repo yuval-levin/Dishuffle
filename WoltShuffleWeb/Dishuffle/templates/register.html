@@ -1,12 +1,7 @@
 {% extends "base_generic.html" %}
 
 {% block body %}
- <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5EedZStuyMBEP7GhIII3NicSFfq3c2Eo&callback=initMap&libraries=places&v=weekly"
-      defer
-    ></script>
-
+{% include 'google_maps_api.html' %}
 <style type="text/css">
 
 .form-signin {
@@ -60,48 +55,5 @@
       {% endif %}
 </form>
 
-
-
-
-<script>
- function initMap() {
-  const input = document.getElementById("address");
-  const autocomplete = new google.maps.places.Autocomplete(input);
-  // Set the data fields to return when the user selects a place.
-  autocomplete.setFields(["address_components", "geometry", "icon", "name"]);
-
-  autocomplete.addListener("place_changed", () => {
-    const place = autocomplete.getPlace();
-
-    if (!place.geometry) {
-      // User entered the name of a Place that was not suggested and
-      // pressed the Enter key, or the Place Details request failed.
-      window.alert("No details available for input: '" + place.name + "'");
-      return;
-    }
-
-    let address = "";
-
-    if (place.address_components) {
-      address = [
-        (place.address_components[0] &&
-          place.address_components[0].short_name) ||
-          "",
-        (place.address_components[1] &&
-          place.address_components[1].short_name) ||
-          "",
-        (place.address_components[2] &&
-          place.address_components[2].short_name) ||
-          "",
-      ].join(" ");
-    }
-  });
-
-}
-
-
-
-</script>
-
-
+{% include 'autocomplete_script.html' %}
 {% endblock body %}
