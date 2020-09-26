@@ -7,6 +7,13 @@ from . import models
 
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(max_length=254, help_text='Required. Add a valid email address.')
+    # these attributes are important for register.html, so we can override the {{field}} in form and use the google
+    # maps autocomplete API
+    address = forms.CharField(max_length=120, widget=forms.TextInput(attrs=
+                                                                     {'placeholder': 'Enter address',
+                                                                      'id': 'address', 'name': 'address',
+                                                                      'type': 'address'}
+                                                                     ))
 
     class Meta:
         model = models.Account
