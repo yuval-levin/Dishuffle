@@ -18,7 +18,7 @@
           No more overthinking your food. Click and Order</p>
             <br>
              {% if request.user.is_authenticated %}
-        <button type="button" class="btn btn-info btn-lg">SHUFFLE</button>
+       <a href="{% url 'shuffle'%}" class="btn btn-info btn-primary">SHUFFLE</a>
             {% endif %}
         </div>
 

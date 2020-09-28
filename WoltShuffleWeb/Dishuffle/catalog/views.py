@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from .forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm
-
+from .actions import return_random_dish
 
 # Create your views here.
 def home(request):
@@ -11,6 +11,22 @@ def home(request):
 
     # Render the HTML template index.html with the data in the context variable
     return render(request, 'home.html', context=context)
+
+def shuffle_view(request):
+    context={}
+    if request.user.is_authenticated:
+        lat = request.user.lat
+        long = request.user.long
+        dish = return_random_dish(lat,long)
+        context['dish_name'] = dish[0]
+        context['restaurant'] = dish[1]
+        context['description'] = dish[2]
+        context['price'] = dish[3]
+        context['img'] = dish[4]
+        return render(request, 'shuffle.html', context)
+    else:
+        return redirect("login")
+
 
 def registration_view(request):
     context = {}

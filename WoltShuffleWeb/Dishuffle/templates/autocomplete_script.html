@@ -2,12 +2,16 @@
 <script>
  function initMap() {
   const input = document.getElementById("address");
+ const lat = document.getElementById("lat");
+  const long = document.getElementById("long");
   const autocomplete = new google.maps.places.Autocomplete(input);
   // Set the data fields to return when the user selects a place.
-  autocomplete.setFields(["address_components", "geometry", "icon", "name"]);
+  autocomplete.setFields(["address_components", "geometry"]);
 
   autocomplete.addListener("place_changed", () => {
     const place = autocomplete.getPlace();
+    lat.value = place.geometry.location.lat()
+    long.value = place.geometry.location.lng()
 
     if (!place.geometry) {
       // User entered the name of a Place that was not suggested and

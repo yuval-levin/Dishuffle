@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-
+from decimal import Decimal
 class MyAccountManager(BaseUserManager):
     def create_user(self, email, username, address, password=None):
         if not email:
@@ -38,7 +38,7 @@ class MyAccountManager(BaseUserManager):
 class Account(AbstractBaseUser):
     email = models.EmailField(verbose_name="email", max_length=60, unique=True)
     username = models.CharField(max_length=30, unique=True)
-    address = models.TextField(max_length = 100,default ='');
+    address = models.TextField(max_length = 100,default ='')
 
     #mandatory fields from abstractBaseUser
     date_joined = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
