@@ -1,17 +1,33 @@
 {% extends "base_generic.html" %}
+{% load static %}
 
 {% block body %}
 
-
-<img src={{img}} class="img-fluid shadow-sm p-2 mb-10 bg-white rounded" alt="Responsive image" style="max-width:400px;width:50%; display: block;
+{% if img == None %}
+<img src={% static 'unnamed.png' %}
+class="img-fluid shadow-sm p-2 mb-10 bg-white rounded"
+style="max-width:400px;width:50%; display: block;
   margin-left: auto;
-  margin-right: auto;
-">
+  margin-right: auto;">
+{% else %}
+<img src={{img}}
+class="img-fluid shadow-sm p-2 mb-10 bg-white rounded"
+style="max-width:400px;width:50%; display: block;
+  margin-left: auto;
+  margin-right: auto;">
+{% endif %}
+
+
  <div class="pricing-header mx-auto text-center">
           <p class="lead">{{dish_name}}, {{price}}₪
           <br> {{description}}<br> </p>
         </div>
  <div class="pricing-header mx-auto text-center" style="font-weight: bold;">
           <p>{{restaurant}} </p>
+
+     <br>
+<a href="{% url 'shuffle'%}" class="btn btn-info btn-primary">RESHUFFLE</a>
+
         </div>
+
 {% endblock body %}
