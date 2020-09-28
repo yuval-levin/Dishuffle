@@ -22,8 +22,8 @@
 <input type="password" name="password1" id="inputPassword1"  class="form-control"  placeholder="Password" required>
           <br>
 <input type="password" name="password2" id="inputPassword2"  class="form-control"  placeholder="Confirm Password" required>
-      <input type="lat" id="lat" name="lat" class="form-control" required/>
-    <input type="long" id="long" name="long" class="form-control" required/>
+      <input type="hidden" id="latitude" name="latitude" class="form-control" required/>
+    <input type="hidden" id="longitude" name="longitude" class="form-control" required/>
       {% for field in registration_form %}
       <!--- deleted helper fields ---->
         {% for error in field.errors %}

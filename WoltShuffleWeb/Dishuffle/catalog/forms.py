@@ -17,7 +17,7 @@ class RegistrationForm(UserCreationForm):
 
     class Meta:
         model = models.Account
-        fields = ('email', 'username', 'address', 'password1', 'password2',)
+        fields = ('email', 'username', 'address', 'password1', 'password2','latitude','longitude')
 
 
 class AccountAuthenticationForm(forms.ModelForm):
@@ -38,7 +38,7 @@ class AccountAuthenticationForm(forms.ModelForm):
 class AccountUpdateForm(forms.ModelForm):
     class Meta:
         model = models.Account
-        fields = ('email', 'username', 'address')
+        fields = ('email', 'username', 'address','latitude','longitude')
 
     # update email
     # we accept multiple users with same email address, hence no checking if user with same email exists

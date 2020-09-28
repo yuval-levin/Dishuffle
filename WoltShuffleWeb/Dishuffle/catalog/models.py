@@ -39,6 +39,8 @@ class Account(AbstractBaseUser):
     email = models.EmailField(verbose_name="email", max_length=60, unique=True)
     username = models.CharField(max_length=30, unique=True)
     address = models.TextField(max_length = 100,default ='')
+    latitude = models.DecimalField(max_digits=18, decimal_places=15,default=Decimal('0.0'))
+    longitude = models.DecimalField(max_digits=18, decimal_places=15,default=Decimal('0.0'))
 
     #mandatory fields from abstractBaseUser
     date_joined = models.DateTimeField(verbose_name='date joined', auto_now_add=True)

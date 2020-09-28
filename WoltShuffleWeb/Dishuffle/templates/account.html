@@ -19,8 +19,8 @@
   <input type="email" name="email" id="inputEmail"  value="{{account_form.initial.email}}" class="form-control"  placeholder="Email" required>
     <br>
         <input type="address" name="address" id="address" value="{{account_form.initial.address}}" class="form-control"  placeholder="Address" required>
-           <input type="hidden" id="lat" name="lat" />
-    <input type="hidden" id="long" name="long" />
+      <input type="hidden" id="latitude" name="latitude" class="form-control" required/>
+    <input type="hidden" id="longitude" name="longitude" class="form-control" required/>
       {% for field in account_form %}
         {% if field.help_text %}
             <small style = "color: grey;"> {{field.help_text}}</small>

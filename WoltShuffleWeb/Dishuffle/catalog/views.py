@@ -15,8 +15,8 @@ def home(request):
 def shuffle_view(request):
     context={}
     if request.user.is_authenticated:
-        lat = request.user.lat
-        long = request.user.long
+        lat = request.user.latitude
+        long = request.user.longitude
         dish = return_random_dish(lat,long)
         context['dish_name'] = dish[0]
         context['restaurant'] = dish[1]
