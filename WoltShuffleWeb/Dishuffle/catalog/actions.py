@@ -35,13 +35,18 @@ def return_random_dish(lat, long):
         rangeRandomDish = len(menu)
         dish_index = random.randrange(rangeRandomDish)
         dish = menu[dish_index]
+        # while loop to avoid "chopsticks" or drinks
+        while (dish['baseprice'] / 100) < 30:
+            dish_index = random.randrange(rangeRandomDish)
+            dish = menu[dish_index]
+        price = dish['baseprice'] / 100
         name = dish['name'][0]['value']
         img = None
         try:
             img = dish['image']
         except:
             pass
-        price = dish['baseprice'] / 100
+
         description = dish['description'][0]['value']
         restaurant_name = restaurant['name'][1]['value']
 
