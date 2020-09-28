@@ -1,0 +1,17 @@
+{% extends "base_generic.html" %}
+
+{% block body %}
+
+
+<img src={{img}} class="img-fluid" alt="Responsive image" style="max-width:400px;width:50%; display: block;
+  margin-left: auto;
+  margin-right: auto;
+">
+ <div class="pricing-header mx-auto text-center">
+          <p class="lead">{{dish_name}}, {{price}}₪
+          <br> {{description}}<br> </p>
+        </div>
+ <div class="pricing-header mx-auto text-center" style="font-weight: bold;">
+          <p>{{restaurant}} </p>
+        </div>
+{% endblock body %}
