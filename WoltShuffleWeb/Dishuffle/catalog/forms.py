@@ -32,10 +32,14 @@ class AccountAuthenticationForm(forms.ModelForm):
             username = self.cleaned_data['username']
             password = self.cleaned_data['password']
             if not authenticate(username=username, password=password):
+                pdb.set_trace()
                 raise forms.ValidationError("Login failed. Check your email and password")
 
 
 class AccountUpdateForm(forms.ModelForm):
+    latitude = forms.DecimalField(widget = forms.HiddenInput(),required = False)
+    longitude = forms.DecimalField(widget = forms.HiddenInput(),required = False)
+
     class Meta:
         model = models.Account
         fields = ('email', 'username', 'address','latitude','longitude')

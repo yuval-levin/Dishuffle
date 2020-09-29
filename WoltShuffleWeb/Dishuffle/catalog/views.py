@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from .forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm
 from .actions import return_random_dish
+import pdb
 
 # Create your views here.
 def home(request):
@@ -35,7 +36,7 @@ def registration_view(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            user.set_password(user.password)
+            user.set_password(form.cleaned_data['password1'])
             user.save()
             login(request, user)
             return redirect('home')
