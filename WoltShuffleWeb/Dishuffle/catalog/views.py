@@ -23,6 +23,7 @@ def shuffle_view(request):
         context['description'] = dish[2]
         context['price'] = dish[3]
         context['img'] = dish[4]
+        context['restaurant_url'] = dish[5]
         return render(request, 'shuffle.html', context)
     else:
         return redirect("login")

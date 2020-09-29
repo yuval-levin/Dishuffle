@@ -49,5 +49,5 @@ def return_random_dish(lat, long):
 
         description = dish['description'][0]['value']
         restaurant_name = restaurant['name'][1]['value']
-
-        return (name, restaurant_name, description, price, img)
+        restaurant_url = restaurant['public_url']
+        return (name, restaurant_name, description, price, img,restaurant_url)
