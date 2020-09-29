@@ -56,6 +56,14 @@ class AccountUpdateForm(forms.ModelForm):
         address = self.cleaned_data['address']
         return address
 
+    def clean_longitude(self):
+        longitude = self.cleaned_data['longitude']
+        return longitude
+
+    def clean_latitude(self):
+        latitude = self.cleaned_data['latitude']
+        return latitude
+
     # validates and updates username in form
     def clean_username(self):
         username = self.cleaned_data['username']

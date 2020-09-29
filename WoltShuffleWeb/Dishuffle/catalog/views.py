@@ -93,7 +93,9 @@ def account_view(request):
             form.initial = {
                 "email": request.POST['email'],
                 "username": request.POST['username'],
-                "address": request.POST['address']
+                "address": request.POST['address'],
+                "longitude": request.POST['longitude'],
+                "latitude": request.POST['latitude']
             }
             form.save()
             context['success_message'] = "Updated"
@@ -102,7 +104,9 @@ def account_view(request):
             initial={
                 "email": request.user.email,
                 "username": request.user.username,
-                "address": request.user.address
+                "address": request.user.address,
+                "longitude": request.user.longitude,
+                "latitude": request.user.latitude
             }
         )
 
