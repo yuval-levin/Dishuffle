@@ -44,7 +44,7 @@ def return_random_dish(lat, long, list_of_unwanted_dishes):
         dish = menu[dish_index]
         # while loop to avoid "chopsticks" or drinks
 
-        while (dish['baseprice'] / 100) < 30 and hashed_dish(restaurant_name,
+        while (dish['baseprice'] / 100) < 30 or hashed_dish(restaurant_name,
                                                              dish['name'][0]['value']) in list_of_unwanted_dishes:
             dish_index = random.randrange(rangeRandomDish)
             dish = menu[dish_index]
