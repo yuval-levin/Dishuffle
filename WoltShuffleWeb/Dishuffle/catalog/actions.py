@@ -2,11 +2,13 @@ import requests
 import hashlib
 import random
 
-def hashed_dish(restaurant,dish_name):
-    combined = dish_name+restaurant
+
+def hashed_dish(restaurant, dish_name):
+    combined = dish_name + restaurant
     return hashlib.md5(combined.encode('utf-8')).hexdigest()
 
-def return_random_dish(lat, long,list_of_unwanted_dishes):
+
+def return_random_dish(lat, long, list_of_unwanted_dishes):
     with requests.session() as session:
         main_page = session.get(
             'https://restaurant-api.wolt.com/v1/pages/front?lat={0}&lon={1}'.format(lat, long)).json()
@@ -20,7 +22,8 @@ def return_random_dish(lat, long,list_of_unwanted_dishes):
                 food_categories = [category['link']['target'] for category in categories_section if
                                    category['title'] not in UNWANTED]
         '''dishes is a list of tuples : name,description,price,img '''
-        # if food_categories is None, we
+        # if food_categories is None, we return None. unfortunately user has no wolt available in address
+        if food_categories is None: return None
         rangeRandomCategory = len(food_categories)
         food_category_index = random.randrange(rangeRandomCategory)
         category_address = 'https://restaurant-api.wolt.com/v3/venues/lists/{0}?lon={1}&lat={2}'.format(
@@ -40,7 +43,9 @@ def return_random_dish(lat, long,list_of_unwanted_dishes):
         dish_index = random.randrange(rangeRandomDish)
         dish = menu[dish_index]
         # while loop to avoid "chopsticks" or drinks
-        while (dish['baseprice'] / 100) < 30 and hashed_dish(restaurant_name,dish['name'][0]['value']) in list_of_unwanted_dishes:
+
+        while (dish['baseprice'] / 100) < 30 and hashed_dish(restaurant_name,
+                                                             dish['name'][0]['value']) in list_of_unwanted_dishes:
             dish_index = random.randrange(rangeRandomDish)
             dish = menu[dish_index]
         price = dish['baseprice'] / 100
@@ -54,4 +59,4 @@ def return_random_dish(lat, long,list_of_unwanted_dishes):
         description = dish['description'][0]['value']
 
         restaurant_url = restaurant['public_url']
-        return (name, restaurant_name, description, price, img,restaurant_url)
+        return (name, restaurant_name, description, price, img, restaurant_url)

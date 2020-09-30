@@ -34,6 +34,9 @@ def shuffle_view(request, combined_string):
 
         list_of_unwanted_dishes = list(request.user.unwanted_dishes.values_list('dish_hash', flat=True))
         dish = return_random_dish(lat, long,list_of_unwanted_dishes)
+        # if user has no available dishes around him
+        if dish is None:
+            return render(request, 'no_dishes.html', context)
         context['dish_name'] = dish[0]
         context['restaurant'] = dish[1]
         context['description'] = dish[2]
