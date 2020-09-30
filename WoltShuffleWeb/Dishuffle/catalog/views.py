@@ -7,6 +7,8 @@ from .forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateFor
 from .actions import return_random_dish
 from .models import Dish
 import hashlib
+import pdb
+
 
 # Create your views here.
 def home(request):
@@ -22,22 +24,26 @@ def shuffle_view(request, combined_string):
     context = {}
 
     if combined_string != 'base':
-        hashed_dish = hashlib.md5(combined_string).hexdigest()
+        hashed_dish = hashlib.md5(combined_string.encode('utf-8')).hexdigest()
         unwanted_dish = Dish.objects.create(dish_hash=hashed_dish)
         request.user.unwanted_dishes.add(unwanted_dish)
 
     if request.user.is_authenticated:
         lat = request.user.latitude
         long = request.user.longitude
-        dish = return_random_dish(lat, long)
+
+        list_of_unwanted_dishes = list(request.user.unwanted_dishes.values_list('dish_hash', flat=True))
+        dish = return_random_dish(lat, long,list_of_unwanted_dishes)
         context['dish_name'] = dish[0]
         context['restaurant'] = dish[1]
         context['description'] = dish[2]
         context['price'] = dish[3]
         context['img'] = dish[4]
         context['restaurant_url'] = dish[5]
+        context['combined_string'] = dish[0] + dish[1]  # this is for if user preses NEVER AGAIN
+
         request.POST = request.POST.copy()
-        request.POST['combined_string']='base'
+        request.POST['combined_string'] = combined_string  # this is for url creation from request
         return render(request, 'shuffle.html', context)
 
     else:

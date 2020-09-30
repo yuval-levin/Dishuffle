@@ -28,7 +28,7 @@ style="max-width:400px;width:50%; display: block;
      <br>
 <a href="{% url 'shuffle' 'base' %}" class="btn btn-info btn-primary">RESHUFFLE</a>
 <a href={{restaurant_url}} class="btn  btn-primary"  target="_blank" rel="noopener noreferrer">ORDER</a>
-<a href="{% url shuffle dish_name restaurant %}" class="btn  btn-danger"  target="_blank" rel="noopener noreferrer">NEVER AGAIN</a>
+<a href="{% url 'shuffle' combined_string=combined_string %}" class="btn  btn-danger" >NEVER AGAIN</a>
 
         </div>
 

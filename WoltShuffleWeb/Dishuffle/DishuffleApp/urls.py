@@ -31,5 +31,6 @@ urlpatterns = [
     path('logout/',logout_view,name='logout'),
     path('login/',login_view,name='login'),
     path('account/', account_view,name='account'),
-    url(r'^shuffle/(?P<combined_string>\w+)$/', shuffle_view,name='shuffle'),
+    # path('shuffle/', shuffle_view,name='shuffle'),
+    url(r'^shuffle/(?P<combined_string>.+?)$', shuffle_view,name='shuffle'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
