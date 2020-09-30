@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-
+from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path
 from django.urls import include
@@ -31,5 +31,5 @@ urlpatterns = [
     path('logout/',logout_view,name='logout'),
     path('login/',login_view,name='login'),
     path('account/', account_view,name='account'),
-    path('shuffle/', shuffle_view, name='shuffle'),
+    url(r'^shuffle/(?P<combined_string>\w+)$/', shuffle_view,name='shuffle'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

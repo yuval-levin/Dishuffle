@@ -1,8 +1,12 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
+from django.urls import reverse
+
 from .forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm
 from .actions import return_random_dish
-import pdb
+from .models import Dish
+import hashlib
 
 # Create your views here.
 def home(request):
@@ -13,19 +17,29 @@ def home(request):
     # Render the HTML template index.html with the data in the context variable
     return render(request, 'home.html', context=context)
 
-def shuffle_view(request):
-    context={}
+
+def shuffle_view(request, combined_string):
+    context = {}
+
+    if combined_string != 'base':
+        hashed_dish = hashlib.md5(combined_string).hexdigest()
+        unwanted_dish = Dish.objects.create(dish_hash=hashed_dish)
+        request.user.unwanted_dishes.add(unwanted_dish)
+
     if request.user.is_authenticated:
         lat = request.user.latitude
         long = request.user.longitude
-        dish = return_random_dish(lat,long)
+        dish = return_random_dish(lat, long)
         context['dish_name'] = dish[0]
         context['restaurant'] = dish[1]
         context['description'] = dish[2]
         context['price'] = dish[3]
         context['img'] = dish[4]
         context['restaurant_url'] = dish[5]
+        request.POST = request.POST.copy()
+        request.POST['combined_string']='base'
         return render(request, 'shuffle.html', context)
+
     else:
         return redirect("login")
 
@@ -99,7 +113,7 @@ def account_view(request):
             }
             form.save()
             context['success_message'] = "Updated"
-    else: # user sent GET request, so we shall present the form, pre-filled with user's current data
+    else:  # user sent GET request, so we shall present the form, pre-filled with user's current data
         form = AccountUpdateForm(
             initial={
                 "email": request.user.email,
