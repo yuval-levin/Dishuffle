@@ -7,7 +7,6 @@ from .forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateFor
 from .actions import return_random_dish
 from .models import Dish
 import hashlib
-import pdb
 
 
 # Create your views here.
@@ -24,8 +23,9 @@ def shuffle_view(request, combined_string):
     context = {}
 
     if combined_string != 'base':
-        hashed_dish = hashlib.md5(combined_string.encode('utf-8')).hexdigest()
-        unwanted_dish = Dish.objects.create(dish_hash=hashed_dish)
+       # hashed_dish = hashlib.md5(combined_string.encode('utf-8')).hexdigest()
+        unwanted_dish = Dish(dish_hash=combined_string)
+        unwanted_dish.save()
         request.user.unwanted_dishes.add(unwanted_dish)
 
     if request.user.is_authenticated:
