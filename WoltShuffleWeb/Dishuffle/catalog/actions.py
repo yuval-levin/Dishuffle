@@ -9,7 +9,7 @@ def hashed_dish(restaurant, dish_name):
     return combined
 
 
-def return_random_dish(lat, long, list_of_unwanted_dishes):
+def return_random_dish(lat, long, set_of_unwanted_dishes):
     with requests.session() as session:
         main_page = session.get(
             'https://restaurant-api.wolt.com/v1/pages/front?lat={0}&lon={1}'.format(lat, long)).json()
@@ -43,10 +43,11 @@ def return_random_dish(lat, long, list_of_unwanted_dishes):
         rangeRandomDish = len(menu)
         dish_index = random.randrange(rangeRandomDish)
         dish = menu[dish_index]
-        # while loop to avoid "chopsticks" or drinks
 
+        if set_of_unwanted_dishes is None: set_of_unwanted_dishes = []
+        # while loop to avoid "chopsticks" or drinks or unwanted dishes
         while (dish['baseprice'] / 100) < 30 or hashed_dish(restaurant_name,
-                                                            dish['name'][0]['value']) in list_of_unwanted_dishes:
+                                                            dish['name'][0]['value']) in set_of_unwanted_dishes:
             dish_index = random.randrange(rangeRandomDish)
             dish = menu[dish_index]
         price = dish['baseprice'] / 100
@@ -61,3 +62,4 @@ def return_random_dish(lat, long, list_of_unwanted_dishes):
 
         restaurant_url = restaurant['public_url']
         return (name, restaurant_name, description, price, img, restaurant_url)
+

@@ -2,14 +2,7 @@ from django.contrib.auth import authenticate
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from decimal import Decimal
-
-# Dish has one field representing it: a hash of restaurant name+dish name
-class Dish(models.Model):
-    dish_hash = models.CharField(unique=True, primary_key=True, max_length=50)
-
-    def __str__(self):
-        return self.dish_hash
-
+from django_mysql.models import SetTextField
 
 
 class MyAccountManager(BaseUserManager):
@@ -51,7 +44,7 @@ class Account(AbstractBaseUser):
     address = models.TextField(max_length=100, default='')
     latitude = models.DecimalField(max_digits=18, decimal_places=15, default=Decimal('0.0'))
     longitude = models.DecimalField(max_digits=18, decimal_places=15, default=Decimal('0.0'))
-    unwanted_dishes = models.ManyToManyField(Dish)
+    unwanted_dishes = SetTextField(base_field=models.CharField(max_length=50),blank=True, null=True)
 
     # mandatory fields from abstractBaseUser
     date_joined = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
