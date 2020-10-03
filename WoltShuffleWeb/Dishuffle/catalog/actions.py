@@ -25,31 +25,27 @@ def return_random_dish(lat, long, set_of_unwanted_dishes):
         '''dishes is a list of tuples : name,description,price,img '''
         # if food_categories is None, we return None. unfortunately user has no wolt available in address
         if food_categories is None: return None
-        rangeRandomCategory = len(food_categories)
-        food_category_index = random.randrange(rangeRandomCategory)
+
         category_address = 'https://restaurant-api.wolt.com/v3/venues/lists/{0}?lon={1}&lat={2}'.format(
-            food_categories[food_category_index],
+            random.choice(food_categories),
             long, lat)
 
         restaurants = session.get(category_address).json()['results']
-        rangeRandomRestaurant = len(restaurants)
-        restaurant_index = random.randrange(rangeRandomRestaurant)
-        restaurant = restaurants[restaurant_index]
+        restaurant = random.choice(restaurants)
+
         restaurant_id = restaurant['active_menu']['$oid']
         address = 'https://restaurant-api.wolt.com/v3/menus/{0}'.format(restaurant_id)
         restaurant_page = session.get(address).json()
         restaurant_name = restaurant['name'][1]['value']
+
         menu = restaurant_page.get('results', [{}])[0].get('items', [])
-        rangeRandomDish = len(menu)
-        dish_index = random.randrange(rangeRandomDish)
-        dish = menu[dish_index]
+        dish = random.choice(menu)
 
         if set_of_unwanted_dishes is None: set_of_unwanted_dishes = []
         # while loop to avoid "chopsticks" or drinks or unwanted dishes
         while (dish['baseprice'] / 100) < 30 or hashed_dish(restaurant_name,
                                                             dish['name'][0]['value']) in set_of_unwanted_dishes:
-            dish_index = random.randrange(rangeRandomDish)
-            dish = menu[dish_index]
+           dish = random.choice(menu)
         price = dish['baseprice'] / 100
         name = dish['name'][0]['value']
         img = None
