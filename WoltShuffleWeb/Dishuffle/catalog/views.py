@@ -5,7 +5,7 @@ from django.urls import reverse
 
 from .forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm
 from .actions import return_random_dish
-#from .models import Dish
+
 import hashlib
 
 
@@ -34,7 +34,7 @@ def shuffle_view(request, combined_string):
         long = request.user.longitude
 
         set_of_unwanted_dishes = request.user.unwanted_dishes
-        dish = return_random_dish(lat, long,set_of_unwanted_dishes)
+        dish = return_random_dish(lat, long,set_of_unwanted_dishes,request.user.username)
         # if user has no available dishes around him
         if dish is None:
             return render(request, 'no_dishes.html', context)
