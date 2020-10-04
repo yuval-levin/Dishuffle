@@ -1,0 +1,64 @@
+
+{% extends "base_generic.html" %}
+
+{% block body %}
+<style>
+    .paddingTB60 {padding:10px 0px 60px 0px;}
+.about-title {}
+.about-title h1 {color: #535353; font-size:45px;font-weight:100;}
+.about-title span {color: #5bc0de; font-size:45px;font-weight:100;}
+.about-title p {color: #7a7a7a;line-height: 1.8;margin: 0 0 15px;}
+.about-paddingB {padding-bottom: 12px;}
+
+
+/* Social Icons */
+.about-icons {margin:40 px px 20px 0px ;}
+.about-icons i{margin-right: 10px;padding: 0px; font-size:35px;color:#323232;box-shadow: 0 0 3px rgba(0, 0, 0, .2);}
+.about-icons li {margin:0px;padding:0;display:inline-block;}
+#social-git:hover {color: #5bc0de;transition:all .001s;}
+#social-lin:hover {color: #5bc0de;transition:all .001s;}
+#social-gmail:hover {color: #5bc0de;transition:all .001s;}
+
+</style>
+
+
+
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="about-section paddingTB60 gray-bg">
+                <div class="container">
+                    <div class="row">
+						<div class="col-md-7 col-sm-6">
+							<div class="about-title clearfix">
+								<h1>About <span>Wolt Shuffle</span></h1>
+								<p class="about-paddingB">
+                                    Wolt Shuffle is a Django based web-app, written in Python,
+                                    meant to generate random Wolt dishes, from  restauraunts near you.
+                                    <br>
+                                Wolt Shuffle scrapes the Wolt website (with the address of the current user) to return the shuffled dish.
+ <br>
+                                Because Scraping is a time consuming process, the first few shuffles will be a bit slower.
+                                In those shuffles, Wolt Shuffle will cache your data, and before you know it, you'll shuffle like the wind.
+                                <br>       Since wolt has no API, Fiddler was used to analyze Wolt's traffic.<br>
+                                If you wish to see Wolt Shuffle's code - github is below</p>
+
+                                <h1>About <span>The Developer</span></h1>
+                                <p class="about-paddingB">
+                                Hi, My name is Yuval, I'm a 3rd year CS student at TAU.
+                                This is my first solo project, but I have experience in the industry, working two years in QA and automation.
+                                I'm currently on the lookout for a job - I'd love to send you my CV - feel free to reach out via LinkedIn or Gmail.
+                                <br>
+						<div class="about-icons">
+                                 <br>
+                               <a href="https://github.com/yuval-levin"><i id="social-git" class="fa fa-github fa-3x social"></i></a>
+                                <a href="https://www.linkedin.com/in/yuval-levin1/"><i id="social-lin" class="fa fa-linkedin-square fa-3x social"></i></a>
+                                <a href="mailto:yuv.levin1@gmail.com"><i id="social-gmail" class="fa fa-envelope fa-3x social"></i></a>
+	        </div>
+		</div>
+		</div>
+
+                    </div>
+                </div>
+            </div>
+
+{% endblock %}
+

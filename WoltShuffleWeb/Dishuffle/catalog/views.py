@@ -19,22 +19,27 @@ def home(request):
     return render(request, 'home.html', context=context)
 
 
+def about_view(request):
+    context = {}
+    return render(request, 'about.html', context=context)
+
+
 def shuffle_view(request, combined_string):
     context = {}
 
     if combined_string != 'base':
-       # hashed_dish = hashlib.md5(combined_string.encode('utf-8')).hexdigest()
+        # hashed_dish = hashlib.md5(combined_string.encode('utf-8')).hexdigest()
         if request.user.unwanted_dishes is None:
             request.user.unwanted_dishes = {combined_string}
-        else: request.user.unwanted_dishes.add(combined_string)
-
+        else:
+            request.user.unwanted_dishes.add(combined_string)
 
     if request.user.is_authenticated:
         lat = request.user.latitude
         long = request.user.longitude
 
         set_of_unwanted_dishes = request.user.unwanted_dishes
-        dish = return_random_dish(lat, long,set_of_unwanted_dishes,request.user.username)
+        dish = return_random_dish(lat, long, set_of_unwanted_dishes, request.user.username)
         # if user has no available dishes around him
         if dish is None:
             return render(request, 'no_dishes.html', context)

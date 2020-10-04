@@ -21,7 +21,7 @@ from django.views.generic import RedirectView
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib.auth import views
-from catalog.views import registration_view, logout_view,login_view, account_view, shuffle_view
+from catalog.views import registration_view, logout_view,login_view, account_view, shuffle_view,about_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,6 +31,7 @@ urlpatterns = [
     path('logout/',logout_view,name='logout'),
     path('login/',login_view,name='login'),
     path('account/', account_view,name='account'),
+    path('about/', about_view,name='about'),
     # path('shuffle/', shuffle_view,name='shuffle'),
     url(r'^shuffle/(?P<combined_string>.+?)$', shuffle_view,name='shuffle'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
