@@ -20,7 +20,7 @@ from django.urls import include
 from django.views.generic import RedirectView
 from django.conf.urls.static import static
 from django.conf import settings
-from django.contrib.auth import views
+from django.contrib.auth import views as auth_views
 from catalog.views import registration_view, logout_view,login_view, account_view, shuffle_view,about_view
 
 urlpatterns = [
@@ -34,4 +34,8 @@ urlpatterns = [
     path('about/', about_view,name='about'),
     # path('shuffle/', shuffle_view,name='shuffle'),
     url(r'^shuffle/(?P<combined_string>.+?)$', shuffle_view,name='shuffle'),
+    path('password_reset',auth_views.PasswordResetView.as_view(),name='password_reset'),
+    path('password_reset_done', auth_views.PasswordResetDoneView.as_view(),name='password_reset_done'),
+    path('password_reset_confirm/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(),name='password_reset_confirm'),
+    path('password_reset_complete', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
