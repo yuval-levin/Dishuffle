@@ -28,11 +28,11 @@ def shuffle_view(request, combined_string):
     context = {}
 
     if combined_string != 'base':
-        # hashed_dish = hashlib.md5(combined_string.encode('utf-8')).hexdigest()
+        hashed_dish = hashlib.md5(combined_string.encode('utf-8')).hexdigest()
         if request.user.unwanted_dishes is None:
-            request.user.unwanted_dishes = {combined_string}
+            request.user.unwanted_dishes = {hashed_dish}
         else:
-            request.user.unwanted_dishes.add(combined_string)
+            request.user.unwanted_dishes.add(hashed_dish)
 
     if request.user.is_authenticated:
         lat = request.user.latitude
@@ -49,7 +49,8 @@ def shuffle_view(request, combined_string):
         context['price'] = dish[3]
         context['img'] = dish[4]
         context['restaurant_url'] = dish[5]
-        context['combined_string'] = dish[0] + dish[1]  # this is for if user preses NEVER AGAIN
+        context['combined_string'] = \
+            hashlib.md5((dish[0] + dish[1]).encode('utf-8')).hexdigest()  # this is for if user preses NEVER AGAIN
 
         request.POST = request.POST.copy()
         request.POST['combined_string'] = combined_string  # this is for url creation from request

@@ -7,6 +7,7 @@ from django.core.cache import caches
 cache = caches['default']
 CACHING_PERIOD = 604800
 
+
 def return_random_dish(lat, long, set_of_unwanted_dishes, username):
     user_changed_address = user_address_update(username, lat)
     if set_of_unwanted_dishes is None: set_of_unwanted_dishes = []
@@ -29,8 +30,6 @@ def return_random_dish(lat, long, set_of_unwanted_dishes, username):
         return dish_details(dish, restaurant)
 
 
-
-
 def user_address_update(username, lat):
     cached_lat = cache.get('lat' + username)  # in case user changes address
     user_changed_address = False
@@ -41,11 +40,9 @@ def user_address_update(username, lat):
     return user_changed_address
 
 
-
-
 def hashed_dish(restaurant, dish_name):
     combined = dish_name + restaurant
-    # return hashlib.md5(combined.encode('utf-8')).hexdigest()
+    return hashlib.md5(combined.encode('utf-8')).hexdigest()
     return combined
 
 
