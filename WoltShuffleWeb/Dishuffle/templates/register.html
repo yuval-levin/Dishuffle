@@ -14,11 +14,11 @@
           <p class="lead">Register an account</p>
         </div>
     {% csrf_token %}
-   <input type="username" name="username" id="inputUsername"  class="form-control" placeholder="Username" required autofocus>
+   <input type="username" name="username" id="inputUsername"  class="form-control" value = "{{registration_form.username.value }}" placeholder="Username" required autofocus>
         <br>
-  <input type="email" name="email" id="inputEmail"   class="form-control"  placeholder="Email" required>
+  <input type="email" name="email" id="inputEmail"   class="form-control"  value = "{{registration_form.email.value }}" placeholder="Email" required>
     <br>
-      <input type="address" name="address" id="address"  class="form-control"  placeholder="Address" required>
+      <input type="address" name="address" id="address"  class="form-control" value = "{{registration_form.address.value }}" placeholder="Address" required>
     <br>
 <input type="password" name="password1" id="inputPassword1"  class="form-control"  placeholder="Password" required>
           <br>

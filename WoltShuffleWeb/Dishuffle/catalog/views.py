@@ -73,7 +73,11 @@ def registration_view(request):
         else:  # user sent invalid data
             context['registration_form'] = form
     else:  # user is sending GET, meaning he wants the form itself:
-        form = RegistrationForm()
+        form = RegistrationForm(initial={
+                "email": "",
+                "username": "",
+                "address": "",
+            })
         context['registration_form'] = form
     return render(request, 'register.html', context)
 
