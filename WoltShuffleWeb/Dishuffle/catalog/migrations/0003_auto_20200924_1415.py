@@ -9,6 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ('catalog', '0001_initial'),
         ('catalog', '0002_auto_20200923_1236'),
     ]
 
@@ -19,7 +20,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('Email', models.EmailField(default='', help_text='Enter E-mail', max_length=254)),
                 ('Address', models.TextField(default='no address', max_length=256)),
-                ('username', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('username', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='catalog.profile')),
             ],
         ),
         migrations.DeleteModel(

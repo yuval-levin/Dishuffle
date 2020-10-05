@@ -14,6 +14,9 @@ class RegistrationForm(UserCreationForm):
                                                                       'id': 'address', 'name': 'address',
                                                                       'type': 'address'}
                                                                      ))
+    latitude = forms.DecimalField(widget = forms.HiddenInput(),required = False,initial = 0.0)
+    longitude = forms.DecimalField(widget = forms.HiddenInput(),required = False,initial = 0.0)
+
 
     class Meta:
         model = models.Account

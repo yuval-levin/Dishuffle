@@ -2,8 +2,9 @@
 {% load static %}
 
 {% block body %}
+ <link rel="stylesheet" href="{% static "CSS/general_style.css"%}">
+
 {% include 'google_maps_api.html' %}
-  <link rel="stylesheet" href="{% static "CSS/general_style.css"%}">
 
 
  <body class="text-center">
@@ -22,8 +23,8 @@
 <input type="password" name="password1" id="inputPassword1"  class="form-control"  placeholder="Password" required>
           <br>
 <input type="password" name="password2" id="inputPassword2"  class="form-control"  placeholder="Confirm Password" required>
-      <input type="hidden" id="latitude" name="latitude" class="form-control" required/>
-    <input type="hidden" id="longitude" name="longitude" class="form-control" required/>
+      <input type="hidden" id="latitude" name="latitude" class="form-control" value='0.0'/>
+    <input type="hidden" id="longitude" name="longitude" class="form-control" value='0.0'/>
       {% for field in registration_form %}
       <!--- deleted helper fields ---->
         {% for error in field.errors %}
@@ -38,7 +39,8 @@
       <p>{{registration_form.non_field_errors}}</p>
     </div>
       {% endif %}
+        {% include 'autocomplete_script.html' %}
 </form>
 
-{% include 'autocomplete_script.html' %}
 {% endblock body %}
+

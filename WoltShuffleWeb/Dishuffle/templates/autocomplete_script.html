@@ -1,5 +1,5 @@
 
-<script>
+<script >
  function initMap() {
   const input = document.getElementById("address");
  const latitude = document.getElementById("latitude");
@@ -10,8 +10,6 @@
 
   autocomplete.addListener("place_changed", () => {
     const place = autocomplete.getPlace();
-    latitude.value = place.geometry.location.lat()
-    longitude.value = place.geometry.location.lng()
 
     if (!place.geometry) {
       // User entered the name of a Place that was not suggested and
@@ -19,6 +17,10 @@
       window.alert("Please choose address from suggested addresses");
       return;
     }
+    debugger
+     latitude.value = place.geometry.location.lat()
+    longitude.value = place.geometry.location.lng()
+
 
   });
 
