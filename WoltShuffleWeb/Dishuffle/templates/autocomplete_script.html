@@ -5,16 +5,18 @@
  const latitude = document.getElementById("latitude");
   const longitude = document.getElementById("longitude");
   const autocomplete = new google.maps.places.Autocomplete(input);
+  const button=document.getElementById("save-changes");
   // Set the data fields to return when the user selects a place.
   autocomplete.setFields(["address_components", "geometry"]);
 
-  autocomplete.addListener("place_changed", () => {
+  button.addEventListener("click", (clickEvent) => {
     const place = autocomplete.getPlace();
 
-    if (!place.geometry) {
+    if (!place?.geometry) {
       // User entered the name of a Place that was not suggested and
       // pressed the Enter key, or the Place Details request failed.
       window.alert("Please choose address from suggested addresses");
+      event.preventDefault();
       return;
     }
     latitude.value = place.geometry.location.lat()
