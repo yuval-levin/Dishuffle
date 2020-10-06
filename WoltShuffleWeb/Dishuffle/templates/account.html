@@ -34,13 +34,18 @@
     <div style="color: red">
       <p>{{account_form.non_field_errors}}</p>
     </div>
-
   {% endif %}
         <br>
+{% if messages %}
+    {% for message in messages %}
+      <p class="{{ message.tags }}">{{ message }}</p>
+    {% endfor %}
+
+{% endif %}
   <button class="btn btn-lg btn-primary btn-block" type="submit" id="save-changes">Save Changes</button>
 
 </form>
-  {% include 'autocomplete_script.html' %}
+  {% include 'autocomplete_script_account.html' %}
 </body>
 
 {% endblock body %}

@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
-from django.urls import reverse
+from django.contrib import messages
 
 from .forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm
 from .actions import return_random_dish
@@ -132,6 +132,7 @@ def account_view(request):
                 "latitude": request.POST['latitude']
             }
             form.save()
+            messages.success(request, 'Account details updated.')
             context['success_message'] = "Updated"
     else:  # user sent GET request, so we shall present the form, pre-filled with user's current data
         form = AccountUpdateForm(

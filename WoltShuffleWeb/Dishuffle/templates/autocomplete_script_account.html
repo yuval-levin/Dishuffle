@@ -1,0 +1,40 @@
+
+<script>
+ var addressChanged=false;
+ function initMap() {
+  const input = document.getElementById("address");
+ const latitude = document.getElementById("latitude");
+  const longitude = document.getElementById("longitude");
+  const autocomplete = new google.maps.places.Autocomplete(input);
+  const button=document.getElementById("save-changes");
+  // Set the data fields to return when the user selects a place.
+      //autocomplete.set("address","{{account_form.initial.address}}");
+  autocomplete.setFields(["address_components", "geometry"]);
+
+   input.addEventListener("change",(changeEvenet)=>
+   {
+   addressChanged=true;
+   });
+
+  button.addEventListener("click", (clickEvent) => {
+    let place = autocomplete.getPlace();
+    const hasLegitAddress=!!"{{account_form.initial.address}}";
+
+    place??=null;
+    if (addressChanged&&!(place?.geometry)) {
+      // User entered the name of a Place that was not suggested and
+      // pressed the Enter key, or the Place Details request failed.
+      window.alert("Please choose address from suggested addresses");
+      event.preventDefault();
+      return;
+    }
+    debugger
+    latitude.value = place?.geometry.location.lat()??{{account_form.initial.latitude|default:0}};
+    longitude.value = place?.geometry.location.lng()??{{account_form.initial.longitude|default:0}};
+
+
+  });
+}
+
+</script>
+
