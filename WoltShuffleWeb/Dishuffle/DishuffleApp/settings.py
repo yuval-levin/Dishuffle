@@ -25,7 +25,7 @@ SECRET_KEY = ')$t6-sr&a6a#zo(!=4la-4*t(r*gt1jv0gm&45c&e(kjks$r1b'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['3.20.225.12','127.0.0.1']
+ALLOWED_HOSTS = ['3.20.225.12','127.0.0.1','www.yuvallevin.com','yuvallevin.com']
 
 
 
