@@ -1,4 +1,7 @@
+
 <script>
+
+    {{     register }}
  var addressChanged=false;
  function initMap() {
   const input = document.getElementById("address");
@@ -8,7 +11,7 @@
   const autocomplete = new google.maps.places.Autocomplete(input);
   const button=document.getElementById("save-changes");
   // Set the data fields to return when the user selects a place.
-      //autocomplete.set("address","{{account_form.initial.address}}");
+      //autocomplete.set("address","{{register.initial.address}}");
   autocomplete.setFields(["address_components", "geometry"]);
 
    input.addEventListener("change",(changeEvenet)=>
@@ -18,7 +21,7 @@
 
   button.addEventListener("click", (clickEvent) => {
     let place = autocomplete.getPlace();
-    const hasLegitAddress=!!"{{account_form.initial.address}}";
+    const hasLegitAddress=!!"{{register.initial.address}}";
 
     place??=null;
     if (addressChanged&&!(place?.geometry)) {
@@ -28,11 +31,12 @@
       event.preventDefault();
       return;
     }
-    latitude.value = place?.geometry.location.lat();
-    longitude.value = place?.geometry.location.lng();
+    latitude.value = place?.geometry.location.lat() ?? {{registration_form.latitude.value|default:0}};
+    longitude.value = place?.geometry.location.lng()  ?? {{registration_form.longitude.value|default:0}};
     form.submit();
 
   });
 }
 
 </script>
+

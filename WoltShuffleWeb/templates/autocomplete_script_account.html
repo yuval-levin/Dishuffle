@@ -1,4 +1,3 @@
-
 <script>
  var addressChanged=false;
  function initMap() {
@@ -29,7 +28,7 @@
       event.preventDefault();
       return;
     }
-    debugger
+
     latitude.value = place?.geometry.location.lat()??{{account_form.initial.latitude}};
     longitude.value = place?.geometry.location.lng()??{{account_form.initial.longitude}};
      form.submit();

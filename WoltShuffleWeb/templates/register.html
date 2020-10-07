@@ -23,8 +23,8 @@
 <input type="password" name="password1" id="inputPassword1"  class="form-control"  placeholder="Password" required>
           <br>
 <input type="password" name="password2" id="inputPassword2"  class="form-control"  placeholder="Confirm Password" required>
-      <input type="hidden" id="latitude" name="latitude" class="form-control" value='0.0'/>
-    <input type="hidden" id="longitude" name="longitude" class="form-control" value='0.0'/>
+      <input type="hidden" id="latitude" name="latitude" class="form-control"  value = "{{registration_form.latitude.value }}"/>
+    <input type="hidden" id="longitude" name="longitude" class="form-control" value = "{{registration_form.longitude.value }}"/>
       {% for field in registration_form %}
       <!--- deleted helper fields ---->
         {% for error in field.errors %}
@@ -41,6 +41,5 @@
       {% endif %}
         {% include 'autocomplete_script_register.html' %}
 </form>
-
 {% endblock body %}
 
