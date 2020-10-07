@@ -2,6 +2,7 @@
  var addressChanged=false;
  function initMap() {
   const input = document.getElementById("address");
+  const form=document.getElementById("register-form");
  const latitude = document.getElementById("latitude");
   const longitude = document.getElementById("longitude");
   const autocomplete = new google.maps.places.Autocomplete(input);
@@ -27,9 +28,9 @@
       event.preventDefault();
       return;
     }
-    latitude.value = place?.geometry.location.lat()??{{registration_form..initial.latitude|default:0}};
-    longitude.value = place?.geometry.location.lng()??{{registration_form..initial.longitude|default:0}};
-
+    latitude.value = place?.geometry.location.lat();
+    longitude.value = place?.geometry.location.lng();
+    form.submit();
 
   });
 }

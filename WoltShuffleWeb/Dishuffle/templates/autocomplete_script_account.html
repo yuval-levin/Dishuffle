@@ -7,6 +7,7 @@
   const longitude = document.getElementById("longitude");
   const autocomplete = new google.maps.places.Autocomplete(input);
   const button=document.getElementById("save-changes");
+  const form=document.getElementById("account-form");
   // Set the data fields to return when the user selects a place.
       //autocomplete.set("address","{{account_form.initial.address}}");
   autocomplete.setFields(["address_components", "geometry"]);
@@ -29,9 +30,9 @@
       return;
     }
     debugger
-    latitude.value = place?.geometry.location.lat()??{{account_form.initial.latitude|default:0}};
-    longitude.value = place?.geometry.location.lng()??{{account_form.initial.longitude|default:0}};
-
+    latitude.value = place?.geometry.location.lat()??{{account_form.initial.latitude}};
+    longitude.value = place?.geometry.location.lng()??{{account_form.initial.longitude}};
+     form.submit();
 
   });
 }

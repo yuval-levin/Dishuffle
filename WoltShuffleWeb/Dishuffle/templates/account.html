@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="{% static "CSS/general_style.css"%}">
 
   <body class="text-center">
-    <form class="form-signin" method ="post">
+    <form class="form-signin" method ="post" id="account-form">
   <h1 class="h3 mb-3 font-weight-normal">Account</h1>
         <div class="pricing-header mx-auto text-center">
           <p class="lead">Edit your account details here </p>
@@ -42,7 +42,7 @@
     {% endfor %}
 
 {% endif %}
-  <button class="btn btn-lg btn-primary btn-block" type="submit" id="save-changes">Save Changes</button>
+  <button class="btn btn-lg btn-primary btn-block" type="button" id="save-changes">Save Changes</button>
 
 </form>
   {% include 'autocomplete_script_account.html' %}
