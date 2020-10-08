@@ -55,6 +55,8 @@ def get_restaurant(session, username, category_address, food_category, user_chan
         cache.set(restaurants_cache, restaurants, CACHING_PERIOD)  # stores the main page for this user for a week
 
     restaurant = random.choice(restaurants)
+    '''prevent closed venues'''
+    while not restaurant['online']: restaurant = random.choice(restaurants)
 
     return restaurant
 
@@ -111,7 +113,6 @@ def choose_random_dish(set_of_unwanted_dishes, session, username, category_addre
             'value']
         restaurant_id = restaurant['active_menu']['$oid']
         menu = get_restaurant_menu(session, restaurant_id)
-
         dish = choose_loop_from_restaurant(restaurant_name, menu, set_of_unwanted_dishes)
 
     return dish
@@ -121,8 +122,8 @@ def choose_loop_from_restaurant(restaurant_name, menu, set_of_unwanted_dishes):
     t0 = time.time()
     dish = random.choice(menu)
 
-    while (dish['baseprice'] / 100) < 30 or hashed_dish(restaurant_name,
-                                                        dish['name'][0]['value']) in set_of_unwanted_dishes:
+    while (dish['baseprice'] / 100) < 30 or \
+            hashed_dish(restaurant_name, dish['name'][0]['value']) in set_of_unwanted_dishes:
         dish = random.choice(menu)
         t1 = time.time()
         if t1 - t0 > 3: return None  # to avoid infinite loops in restaurants
