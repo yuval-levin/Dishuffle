@@ -89,7 +89,8 @@ def get_restaurant_menu(session, restaurant_id):
 
 def dish_details(dish, restaurant):
     name = dish['name'][0]['value']
-    restaurant_name = restaurant['name'][1]['value']
+    restaurant_name = restaurant['name'][1]['value'] if len(restaurant['name']) > 1 else restaurant['name'][0][
+        'value']
     price = dish['baseprice'] / 100
     description = dish['description'][0]['value']
     restaurant_url = restaurant['public_url']
