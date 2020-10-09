@@ -11,23 +11,34 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+SECRET_KEY = env('SECRET_KEY')
 
+DATABASES = {
+    'default': {
+        'ENGINE': env("ENGINE"),
+        'NAME': env("DATABASE_NAME"),
+        'USER': env("DATABASE_USER"),
+        'PASSWORD': env("DATABASE_PASSWORD"),
+        'HOST': env("DATABASE_HOST"),
+        'PORT': env("DATABASE_PORT"),
+    }
+}
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ')$t6-sr&a6a#zo(!=4la-4*t(r*gt1jv0gm&45c&e(kjks$r1b'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['3.20.225.12','127.0.0.1','www.yuvallevin.com','yuvallevin.com']
-
-
+ALLOWED_HOSTS = ['3.20.225.12', '127.0.0.1', 'www.yuvallevin.com', 'yuvallevin.com']
 
 # Application definition
 
@@ -73,28 +84,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'DishuffleApp.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'pythonlogin',
-        'USER': 'root',
-        'PASSWORD': 'QAZqaz11',
-        'HOST': 'localhost',
-        'PORT': '3306',
-    }
-}
 
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-        'LOCATION': '127.0.0.1:11211',
+        'BACKEND':env("BACKEND_CACHE"),
+        'LOCATION':env("BACKEND_LOCATION"),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -114,7 +113,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -128,38 +126,36 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = '/'
-#email settings for debug
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# email settings for debug
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'woshuffle@gmail.com'
-EMAIL_HOST_PASSWORD = 'dzfobtclmpxccezs'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'WoltShuffle <noreply@woltshuffle.com>'
-
+EMAIL_BACKEND = env("EMAIL_BACKEND")
+EMAIL_HOST = env("EMAIL_HOST")
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = env("EMAIL_PORT")
+EMAIL_USE_TLS = env("EMAIL_USE_TLS")
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
 
 AUTH_USER_MODEL = 'catalog.Account'
 STATIC_ROOT = ''
-STATICFILES_DIRS =  os.path.join('static'),
+STATICFILES_DIRS = os.path.join('static'),
 
 AUTHENTICATION_BACKENDS = (
-        'django.contrib.auth.backends.ModelBackend',
-    )
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
 sentry_sdk.init(
-    dsn="https://d264bf71e3ca4a6385187c4242542f54@o459306.ingest.sentry.io/5458222",
+    dsn=env("SENTRY_DSN"),
     integrations=[DjangoIntegration()],
     traces_sample_rate=1.0,
     # If you wish to associate users to errors (assuming you are using
