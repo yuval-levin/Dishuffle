@@ -5,9 +5,11 @@ from django.contrib import messages
 
 from .forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm
 from .actions import return_random_dish
-
+import environ
 import hashlib
 
+env = environ.Env()
+environ.Env.read_env()
 
 # Create your views here.
 def home(request):
@@ -42,6 +44,11 @@ def shuffle_view(request, combined_string):
         # if user has no available dishes around him
         if dish is None:
             return render(request, 'no_dishes.html', context)
+        if dish is env("CLOSED_VENUES"):
+            return render(request,'no_venues_open.html',context)
+        if dish is env("BROKEN_API"):
+            return render(request,'something_went_wrong.html',context)
+
         context['dish_name'] = dish[0]
         context['restaurant'] = dish[1]
         context['description'] = dish[2]

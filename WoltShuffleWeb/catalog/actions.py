@@ -1,70 +1,56 @@
-import requests
 import hashlib
 import random
 import time
 from django.core.cache import caches
+from . import wolt_scraping
+import environ
 
 cache = caches['default']
-CACHING_PERIOD = 604800
+CACHING_PERIOD_SEC = 7 * 24 * 60 * 60  # CR ENV VARIABLE
+
+env = environ.Env()
+environ.Env.read_env()
 
 
-def return_random_dish(lat, long, set_of_unwanted_dishes, username):
-    user_changed_address = user_address_update(username, lat)
-    if set_of_unwanted_dishes is None: set_of_unwanted_dishes = []
+def return_random_dish(lat, long, unwanted_dishes_set, username):
+    user_changed_address = update_user_address(username, lat)
+    # if food_categories is None, we return None. unfortunately user has no Wolt available in address
+    unwanted_dishes_set = unwanted_dishes_set or []
 
-    with requests.session() as session:
-        main_page = get_main_page(session, username, lat, long, user_changed_address)
-        food_categories = filter_food_categories(main_page['sections'])
+    session = wolt_scraping.create_wolt_session()
+    main_page = wolt_scraping.get_wolt_main_page(session, username, lat, long, user_changed_address)
+    if main_page is env("BROKEN_API"):
+        return env("BROKEN_API")
 
-        # if food_categories is None, we return None. unfortunately user has no Wolt available in address
-        if food_categories is None: return None
-        food_category = random.choice(food_categories)
-        category_address = 'https://restaurant-api.wolt.com/v3/venues/lists/{0}?lon={1}&lat={2}'.format(
-            food_category,
-            long, lat)
-        restaurant, dish = choose_random_dish(set_of_unwanted_dishes, session, username, category_address,
-                                  food_category)
-        return dish_details(dish, restaurant)
+    food_categories = filter_food_categories(main_page['sections'])
+
+    # if food_categories is None, we return None. unfortunately user has no Wolt available in address
+    if food_categories is None: return None
+    food_category = random.choice(food_categories)
+    category_address = 'https://restaurant-api.wolt.com/v3/venues/lists/{0}?lon={1}&lat={2}'.format(
+        food_category,
+        long, lat)
+    restaurant, dish = choose_random_dish(unwanted_dishes_set, session, username, category_address,
+                                          food_category)
+    if restaurant is env("CLOSED_VENUES"):  # meaning all venues were closed
+        return env("CLOSED_VENUES")
+    return wolt_scraping.dish_details(dish, restaurant)
 
 
-def user_address_update(username, lat):
+def update_user_address(username, lat):
     cached_lat = cache.get('lat' + username)  # in case user changes address
     user_changed_address = False
     if cached_lat is not None and cached_lat != lat:
         user_changed_address = True
-    cache.set('lat' + username, lat, CACHING_PERIOD)
+    cache.set('lat' + username, lat, CACHING_PERIOD_SEC)
 
     return user_changed_address
 
 
-def hashed_dish(restaurant, dish_name):
+def hash_dish_name(restaurant, dish_name):
     combined = dish_name + restaurant
     return hashlib.md5(combined.encode('utf-8')).hexdigest()
     return combined
-
-
-# returns restaurant from category_address
-def get_restaurant(session, username, category_address, food_category, user_changed_address):
-    restaurants_cache = username + food_category
-    restaurants = cache.get(restaurants_cache)
-    if restaurants is None or user_changed_address:
-        restaurants = session.get(category_address).json()['results']
-        cache.set(restaurants_cache, restaurants, CACHING_PERIOD)  # stores the main page for this user for a week
-
-    restaurant = random.choice(restaurants)
-    '''prevent closed venues'''
-    while not restaurant['online']: restaurant = random.choice(restaurants)
-
-    return restaurant
-
-
-def get_main_page(session, username, lat, long, user_changed_address):
-    main_page = cache.get(username)
-    if main_page is None or user_changed_address:
-        main_page = session.get(
-            'https://restaurant-api.wolt.com/v1/pages/front?lat={0}&lon={1}'.format(lat, long)).json()
-        cache.set(username, main_page, CACHING_PERIOD)  # stores the main page for this user for a week
-    return main_page
 
 
 def filter_food_categories(sections):
@@ -79,38 +65,21 @@ def filter_food_categories(sections):
     return food_categories
 
 
-def get_restaurant_menu(session, restaurant_id):
-    address = 'https://restaurant-api.wolt.com/v3/menus/{0}'.format(restaurant_id)
-    restaurant_page = session.get(address).json()
-    menu = restaurant_page.get('results', [{}])[0].get('items', [])
-    return menu
-
-
-def dish_details(dish, restaurant):
-    name = dish['name'][0]['value']
-    restaurant_name = restaurant['name'][1]['value'] if len(restaurant['name']) > 1 else restaurant['name'][0][
-        'value']
-    price = dish['baseprice'] / 100
-    description = dish['description'][0]['value']
-    restaurant_url = restaurant['public_url']
-    img = None
-    try:
-        img = dish['image']
-    except:
-        pass
-    return (name, restaurant_name, description, price, img, restaurant_url)
-
-
 def choose_random_dish(set_of_unwanted_dishes, session, username, category_address,
                        food_category):
     dish = None
     restaurant = None
     while dish is None:
-        restaurant = get_restaurant(session, username, category_address, food_category, False)
+        restaurant = wolt_scraping.get_restaurant(session, username, category_address, food_category, False)
+        if restaurant is env("CLOSED_VENUES"):  # meaning all restaurants were closed
+            return None, None
+        if restaurant is env("BROKEN_API"):
+            return env("BROKEN_API")
+
         restaurant_name = restaurant['name'][1]['value'] if len(restaurant['name']) > 1 else restaurant['name'][0][
             'value']
         restaurant_id = restaurant['active_menu']['$oid']
-        menu = get_restaurant_menu(session, restaurant_id)
+        menu = wolt_scraping.get_restaurant_menu(session, restaurant_id)
         dish = choose_loop_from_restaurant(restaurant_name, menu, set_of_unwanted_dishes)
 
     return restaurant, dish
@@ -121,7 +90,7 @@ def choose_loop_from_restaurant(restaurant_name, menu, set_of_unwanted_dishes):
     dish = random.choice(menu)
 
     while (dish['baseprice'] / 100) < 30 or \
-            hashed_dish(restaurant_name, dish['name'][0]['value']) in set_of_unwanted_dishes:
+            hash_dish_name(restaurant_name, dish['name'][0]['value']) in set_of_unwanted_dishes:
         dish = random.choice(menu)
         t1 = time.time()
         if t1 - t0 > 3: return None  # to avoid infinite loops in restaurants

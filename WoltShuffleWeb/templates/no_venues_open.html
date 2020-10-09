@@ -1,0 +1,13 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block body %}
+
+ <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+
+          <p class="lead">We're sorry, It seems all venues near you are closed.<br>
+          You can change your your address in the <a href="{% url 'account' %}">Account</a> page</p>
+            <br>
+        </div>
+
+{% endblock body %}
