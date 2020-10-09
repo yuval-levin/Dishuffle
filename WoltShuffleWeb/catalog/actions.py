@@ -22,10 +22,7 @@ def return_random_dish(lat, long, set_of_unwanted_dishes, username):
         category_address = 'https://restaurant-api.wolt.com/v3/venues/lists/{0}?lon={1}&lat={2}'.format(
             food_category,
             long, lat)
-
-        restaurant = get_restaurant(session, username, category_address, food_category, user_changed_address)
-
-        dish = choose_random_dish(set_of_unwanted_dishes, session, username, category_address,
+        restaurant, dish = choose_random_dish(set_of_unwanted_dishes, session, username, category_address,
                                   food_category)
         return dish_details(dish, restaurant)
 
@@ -107,6 +104,7 @@ def dish_details(dish, restaurant):
 def choose_random_dish(set_of_unwanted_dishes, session, username, category_address,
                        food_category):
     dish = None
+    restaurant = None
     while dish is None:
         restaurant = get_restaurant(session, username, category_address, food_category, False)
         restaurant_name = restaurant['name'][1]['value'] if len(restaurant['name']) > 1 else restaurant['name'][0][
@@ -115,7 +113,7 @@ def choose_random_dish(set_of_unwanted_dishes, session, username, category_addre
         menu = get_restaurant_menu(session, restaurant_id)
         dish = choose_loop_from_restaurant(restaurant_name, menu, set_of_unwanted_dishes)
 
-    return dish
+    return restaurant, dish
 
 
 def choose_loop_from_restaurant(restaurant_name, menu, set_of_unwanted_dishes):

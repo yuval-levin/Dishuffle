@@ -12,7 +12,7 @@ Sentry.init({
   integrations: [
     new Sentry.Integrations.BrowserTracing(),
   ],
-
+  environment:"development",
   // We recommend adjusting this value in production, or using tracesSampler
   // for finer control
   tracesSampleRate: 1.0,
