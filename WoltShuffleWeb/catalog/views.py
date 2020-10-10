@@ -5,18 +5,16 @@ from django.contrib import messages
 
 from .forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateForm
 from .actions import return_random_dish
+from .actions import hash_dish_name
 import environ
 import hashlib
 
 env = environ.Env()
 environ.Env.read_env()
 
-# Create your views here.
-def home(request):
-    """View function for home page of site."""
 
+def home(request):
     context = {}
-    # Render the HTML template index.html with the data in the context variable
     return render(request, 'home.html', context=context)
 
 
@@ -25,17 +23,18 @@ def about_view(request):
     return render(request, 'about.html', context=context)
 
 
-def shuffle_view(request, combined_string):
+def shuffle_view(request, hashed_dish):
     context = {}
 
-    if combined_string != 'base':
-        hashed_dish = hashlib.md5(combined_string.encode('utf-8')).hexdigest()
-        if request.user.unwanted_dishes is None:
-            request.user.unwanted_dishes = {hashed_dish}
-        else:
-            request.user.unwanted_dishes.add(hashed_dish)
-
     if request.user.is_authenticated:
+
+        if hashed_dish != 'base':
+            if request.user.unwanted_dishes is None:
+                request.user.unwanted_dishes = {hashed_dish}
+            else:
+                request.user.unwanted_dishes.add(hashed_dish)
+            request.user.save()
+
         lat = request.user.latitude
         long = request.user.longitude
 
@@ -45,21 +44,21 @@ def shuffle_view(request, combined_string):
         if dish is None:
             return render(request, 'no_dishes.html', context)
         if dish is env("CLOSED_VENUES"):
-            return render(request,'no_venues_open.html',context)
+            return render(request, 'no_venues_open.html', context)
         if dish is env("BROKEN_API"):
-            return render(request,'something_went_wrong.html',context)
+            return render(request, 'something_went_wrong.html', context)
 
-        context['dish_name'] = dish[0]
-        context['restaurant'] = dish[1]
-        context['description'] = dish[2]
-        context['price'] = dish[3]
-        context['img'] = dish[4]
-        context['restaurant_url'] = dish[5]
-        context['combined_string'] = \
-            hashlib.md5((dish[0] + dish[1]).encode('utf-8')).hexdigest()  # this is for if user preses NEVER AGAIN
+        context['dish_name'] = dish.name
+        context['restaurant'] = dish.restaurant
+        context['description'] = dish.description
+        context['price'] = dish.price
+        context['img'] = dish.img
+        context['restaurant_url'] = dish.restaurant_url
+        context['hashed_dish'] = \
+            hash_dish_name(dish.restaurant, dish.name)  # this is for if user preses NEVER AGAIN
 
         request.POST = request.POST.copy()
-        request.POST['combined_string'] = combined_string  # this is for url creation from request
+        request.POST['hashed_dish'] = hashed_dish  # this is for url creation from request
         return render(request, 'shuffle.html', context)
 
     else:
@@ -68,6 +67,7 @@ def shuffle_view(request, combined_string):
 
 def registration_view(request):
     context = {}
+    if request.user.is_authenticated: return redirect("home")
     if request.POST:  # user is sending form data
         form = RegistrationForm(request.POST)
         if form.is_valid():
@@ -80,10 +80,10 @@ def registration_view(request):
             context['registration_form'] = form
     else:  # user is sending GET, meaning he wants the form itself:
         form = RegistrationForm(initial={
-                "email": "",
-                "username": "",
-                "address": "",
-            })
+            "email": "",
+            "username": "",
+            "address": "",
+        })
         context['registration_form'] = form
     return render(request, 'register.html', context)
 
@@ -139,7 +139,7 @@ def account_view(request):
             }
             form.save()
             messages.success(request, 'Account details updated.')
-            context['success_message'] = "Updated"
+            context['success_message'] = 'Updated'
     else:  # user sent GET request, so we shall present the form, pre-filled with user's current data
         form = AccountUpdateForm(
             initial={
