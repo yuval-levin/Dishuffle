@@ -19,7 +19,7 @@ def return_random_dish(lat, long, unwanted_dishes_set, username):
 
     session = wolt_scraping.create_wolt_session()
     main_page = wolt_scraping.get_wolt_main_page(session, username, lat, long, user_changed_address)
-    if main_page is env("BROKEN_API"):
+    if main_page == env("BROKEN_API"):
         return env("BROKEN_API")
 
     food_categories = filter_food_categories(main_page['sections'])
@@ -29,7 +29,7 @@ def return_random_dish(lat, long, unwanted_dishes_set, username):
 
     restaurant = None
     t0 = time.time()
-    while restaurant is env("CLOSED_VENUES") or restaurant is None:
+    while restaurant == env("CLOSED_VENUES") or restaurant is None:
         # sometimes chosen category is fully closed - e.g. in early morning, hamburgers are closed
         # so we choose category again
 
@@ -41,7 +41,7 @@ def return_random_dish(lat, long, unwanted_dishes_set, username):
         t1 = time.time()
 
         if t1 - t0 > 15: return None  # avoiding infinite loop of ALL closed venues in ALL categories
-        if restaurant is env("BROKEN_API"):
+        if restaurant == env("BROKEN_API"):
             return None
 
     return wolt_scraping.dish_details(dish, restaurant)
@@ -82,10 +82,9 @@ def choose_random_dish(set_of_unwanted_dishes, session, username, category_addre
     t0 = time.time()
     while dish is None:
         restaurant = wolt_scraping.get_restaurant(session, username, category_address, food_category, False)
-
-        if restaurant is env("CLOSED_VENUES"):  # meaning all restaurants were closed in this category
+        if restaurant == env("CLOSED_VENUES"):  # meaning all restaurants were closed in this category
             return env("CLOSED_VENUES"), None
-        if restaurant is env("BROKEN_API"):
+        if restaurant == env("BROKEN_API"):
             return env("BROKEN_API")
 
         restaurant_name = restaurant['name'][1]['value'] if len(restaurant['name']) > 1 else restaurant['name'][0][
