@@ -40,7 +40,7 @@ The first few shuffles might be a tad slow, as user still has no cache.
 #### Edit your details
 
 <img width="478" border="1" alt="account_details" src="https://user-images.githubusercontent.com/57755465/95687579-1ae11980-0c0d-11eb-933a-705915c4b62b.PNG">
-<br/> If you the update was successful, a message will appear - 
+<br/> If you the update was successful, a message will appear.
 
 
 #### Recover forgotten password
@@ -50,18 +50,6 @@ The first few shuffles might be a tad slow, as user still has no cache.
 Enter your email.<br/>
 <img width="485" border="1" alt="forgot_passowrd_2" src="https://user-images.githubusercontent.com/57755465/95687713-fcc7e900-0c0d-11eb-892f-7ab926d507ed.PNG">
 <br/>
-A page with directions will follow.
-<br/>
-<img width="485" border="1" alt="forgot_password_3" src="https://user-images.githubusercontent.com/57755465/95687708-fa658f00-0c0d-11eb-87ec-0904c5c70394.PNG">
-
-By clicking the link provided in the email, you will be directed to a password-reset form
-<br/>
-<img width="493" border="1" alt="password_reset_form" src="https://user-images.githubusercontent.com/57755465/95687712-fc2f5280-0c0d-11eb-8c25-1176edd0b96c.PNG">
-<br/>
-
-Once you have saved the new password, a success page will be presented
-<br/>
-<img width="489" border="1" alt="password_reset_done" src="https://user-images.githubusercontent.com/57755465/95687710-fb96bc00-0c0d-11eb-8de2-6170c958552c.PNG">
 
 ### Documentation
 Consul provides several key features:
