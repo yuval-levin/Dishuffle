@@ -26,7 +26,7 @@ from catalog.views import registration_view, logout_view,login_view, account_vie
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('catalog/', home, name='home'),
-
+    path('', home, name='home'),
     path('register/', registration_view, name='register'),
     path('logout/',logout_view,name='logout'),
     path('login/',login_view,name='login'),

@@ -20,17 +20,32 @@
     let place = autocomplete.getPlace();
     const hasLegitAddress=!!"{{account_form.initial.address}}";
 
-    place??=null;
-    if (addressChanged&&!(place?.geometry)) {
+    if(typeof place == 'undefined')
+    {
+        place = null; // simulates place??=null; since old browsers don't have ??
+    }
+    var geo = null;
+    if(place != null)
+	{
+	  geo = place.geometry
+	}
+
+    if (addressChanged&&!geo) {
       // User entered the name of a Place that was not suggested and
       // pressed the Enter key, or the Place Details request failed.
       window.alert("Please choose address from suggested addresses");
       event.preventDefault();
       return;
     }
+    latitude.value = {{account_form.latitude.value}};
+    longitude.value = {{account_form.longitude.value}};
 
-    latitude.value = place?.geometry.location.lat()??{{account_form.initial.latitude}};
-    longitude.value = place?.geometry.location.lng()??{{account_form.initial.longitude}};
+    if(place != null && typeof place != 'undefined')
+    {
+        latitude.value = place.geometry.location.lat()
+        longitude.value = place.geometry.location.lng()
+    }
+
      form.submit();
 
   });
