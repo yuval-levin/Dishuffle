@@ -7,10 +7,7 @@ from .forms import RegistrationForm, AccountAuthenticationForm, AccountUpdateFor
 from .actions import return_random_dish
 from .actions import hash_dish_name
 import environ
-import hashlib
-
-env = environ.Env()
-environ.Env.read_env()
+from . import constants
 
 
 def home(request):
@@ -43,9 +40,9 @@ def shuffle_view(request, hashed_dish):
         # if user has no available dishes around him
         if dish is None:
             return render(request, 'no_dishes.html', context)
-        if dish is env("CLOSED_VENUES"):
+        if dish is constants.CLOSED_VENUES:
             return render(request, 'no_venues_open.html', context)
-        if dish is env("BROKEN_API"):
+        if dish is constants.BROKEN_API:
             return render(request, 'something_went_wrong.html', context)
 
         context['dish_name'] = dish.name
