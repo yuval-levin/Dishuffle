@@ -5,6 +5,7 @@ from django.core.cache import caches
 from . import wolt_scraping
 from . import constants
 
+import time
 cache = caches['default']
 CACHING_PERIOD_SEC = 7 * 24 * 60 * 60  # CR ENV VARIABLE
 
@@ -13,7 +14,7 @@ def return_random_dish(lat, long, unwanted_dishes_set, username):
     user_changed_address = update_user_address(username, lat)
     # if food_categories is None, we return None. unfortunately user has no Wolt available in address
     unwanted_dishes_set = unwanted_dishes_set or []
-
+    t0 = time.time()
     with requests.session() as session:
         main_page = wolt_scraping.get_wolt_main_page(session, username, lat, long, user_changed_address)
         if main_page == constants.BROKEN_API:
@@ -39,6 +40,8 @@ def return_random_dish(lat, long, unwanted_dishes_set, username):
             if iterations_count > constants.LAX_ITERATION_LIMIT: return None  # avoiding infinite loop of ALL closed venues in ALL categories
             if restaurant == constants.BROKEN_API:
                 return None
+        t1 = time.time()
+        print(t1-t0)
         return wolt_scraping.dish_details(dish, restaurant)
 
 
@@ -77,6 +80,7 @@ def choose_random_dish(set_of_unwanted_dishes, session, username, category_addre
     restaurant = None
     iterations_count = 0
     while dish is None:
+        print(food_category)
         restaurant = wolt_scraping.get_restaurant(session, username, category_address, food_category, False)
         if restaurant == constants.CLOSED_VENUES:  # meaning all restaurants were closed in this category
             return constants.CLOSED_VENUES, None

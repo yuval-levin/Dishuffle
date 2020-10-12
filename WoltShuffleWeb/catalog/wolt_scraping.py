@@ -49,7 +49,7 @@ def get_restaurant(session, username, category_address, food_category, user_chan
         # for a week
     restaurant = random.choice(restaurants)
     # prevent closed venues
-    iterations_count = 0;
+    iterations_count = 0
     while not restaurant['online']:
         restaurant = random.choice(restaurants)
         iterations_count += 1
