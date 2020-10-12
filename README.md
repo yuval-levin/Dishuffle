@@ -42,7 +42,6 @@ The first few shuffles might be a tad slow, as user still has no cache.
 <img width="478" border="1" alt="account_details" src="https://user-images.githubusercontent.com/57755465/95687579-1ae11980-0c0d-11eb-933a-705915c4b62b.PNG">
 <br/> If you the update was successful, a message will appear.
 
-
 #### Recover forgotten password
 
 <img width="538" border="1" alt="forgot_password" src="https://user-images.githubusercontent.com/57755465/95687598-4532d700-0c0d-11eb-91c0-a80473c7f593.PNG">
