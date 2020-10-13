@@ -3,11 +3,11 @@
 
     function initMap() {
         const input = document.getElementById("address");
+        const form = document.getElementById("account-form");
         const latitude = document.getElementById("latitude");
         const longitude = document.getElementById("longitude");
         const autocomplete = new google.maps.places.Autocomplete(input);
         const button = document.getElementById("save-changes");
-        const form = document.getElementById("account-form");
         // Set the data fields to return when the user selects a place.
         //autocomplete.set("address","{{account_form.initial.address}}");
         autocomplete.setFields(["address_components", "geometry"]);
