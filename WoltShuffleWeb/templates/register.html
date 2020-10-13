@@ -39,7 +39,7 @@
       <p>{{registration_form.non_field_errors}}</p>
     </div>
       {% endif %}
-        {% include 'autocomplete_script_register.html' %}
+        {% include 'autocomplete_script.html' with name_of_page="register" initial_form=register full_name_of_page="registration_form" %}
 </form>
 {% endblock body %}
 
