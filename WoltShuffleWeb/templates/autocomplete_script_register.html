@@ -8,7 +8,6 @@
     var addressChanged = false;
 
     function initMap() {
-
         const input = document.getElementById("address");
         const form = document.getElementById("register-form");
         const latitude = document.getElementById("latitude");
@@ -16,7 +15,6 @@
         const autocomplete = new google.maps.places.Autocomplete(input);
         const button = document.getElementById("save-changes");
         // Set the data fields to return when the user selects a place.
-        //autocomplete.set("address","{{register.initial.address}}");
         autocomplete.setFields(["address_components", "geometry"]);
 
         input.addEventListener("change", (changeEvenet) => {
