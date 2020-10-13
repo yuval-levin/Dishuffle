@@ -24,6 +24,7 @@
         button.addEventListener("click", (clickEvent) => {
             let place = autocomplete.getPlace();
             const hasLegitAddress = !!"{{register.initial.address}}";
+
             if (typeof place == 'undefined') {
                 place = null; // simulates place??=null; since old browsers don't have ??
             }
@@ -55,6 +56,7 @@
             }
         }
             ;
+
             if (place != null && typeof place != 'undefined') {
                 latitude.value = place.geometry.location.lat()
                 longitude.value = place.geometry.location.lng()
