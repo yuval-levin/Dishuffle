@@ -1,55 +1,62 @@
 <script>
- var addressChanged=false;
- function initMap() {
-  const input = document.getElementById("address");
- const latitude = document.getElementById("latitude");
-  const longitude = document.getElementById("longitude");
-  const autocomplete = new google.maps.places.Autocomplete(input);
-  const button=document.getElementById("save-changes");
-  const form=document.getElementById("account-form");
-  // Set the data fields to return when the user selects a place.
-      //autocomplete.set("address","{{account_form.initial.address}}");
-  autocomplete.setFields(["address_components", "geometry"]);
+    var addressChanged = false;
 
-   input.addEventListener("change",(changeEvenet)=>
-   {
-   addressChanged=true;
-   });
+    function initMap() {
+        const input = document.getElementById("address");
+        const latitude = document.getElementById("latitude");
+        const longitude = document.getElementById("longitude");
+        const autocomplete = new google.maps.places.Autocomplete(input);
+        const button = document.getElementById("save-changes");
+        const form = document.getElementById("account-form");
+        // Set the data fields to return when the user selects a place.
+        //autocomplete.set("address","{{account_form.initial.address}}");
+        autocomplete.setFields(["address_components", "geometry"]);
 
-  button.addEventListener("click", (clickEvent) => {
-    let place = autocomplete.getPlace();
-    const hasLegitAddress=!!"{{account_form.initial.address}}";
+        input.addEventListener("change", (changeEvenet) => {
+            addressChanged = true;
+        });
 
-    if(typeof place == 'undefined')
-    {
-        place = null; // simulates place??=null; since old browsers don't have ??
+        button.addEventListener("click", (clickEvent) => {
+            let place = autocomplete.getPlace();
+            const hasLegitAddress = !!"{{account_form.initial.address}}";
+
+            if (typeof place == 'undefined') {
+                place = null; // simulates place??=null; since old browsers don't have ??
+            }
+            var geo = null;
+            if (place != null) {
+                geo = place.geometry
+            }
+
+            if (addressChanged && !geo) {
+                // User entered the name of a Place that was not suggested and
+                // pressed the Enter key, or the Place Details request failed.
+                window.alert("Please choose address from suggested addresses");
+                event.preventDefault();
+                return;
+            }
+            latitude.value = {
+            {
+                account_form.latitude.value
+            }
+        }
+            ;
+            longitude.value = {
+            {
+                account_form.longitude.value
+            }
+        }
+            ;
+
+            if (place != null && typeof place != 'undefined') {
+                latitude.value = place.geometry.location.lat()
+                longitude.value = place.geometry.location.lng()
+            }
+
+            form.submit();
+
+        });
     }
-    var geo = null;
-    if(place != null)
-	{
-	  geo = place.geometry
-	}
-
-    if (addressChanged&&!geo) {
-      // User entered the name of a Place that was not suggested and
-      // pressed the Enter key, or the Place Details request failed.
-      window.alert("Please choose address from suggested addresses");
-      event.preventDefault();
-      return;
-    }
-    latitude.value = {{account_form.latitude.value}};
-    longitude.value = {{account_form.longitude.value}};
-
-    if(place != null && typeof place != 'undefined')
-    {
-        latitude.value = place.geometry.location.lat()
-        longitude.value = place.geometry.location.lng()
-    }
-
-     form.submit();
-
-  });
-}
 
 </script>
 
